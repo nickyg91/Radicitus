@@ -12,7 +12,8 @@ var gulp   = require("gulp"),
 var paths = {
     webroot: "./wwwroot/",
     lib: "./wwwroot/lib/",
-    nodeRoot: "./node_modules/"
+    nodeRoot: "./node_modules/",
+    fontRoot: "./wwwroot/fonts/"
 };
 
 paths.bootstrap = paths.nodeRoot + "bootstrap/dist/js/bootstrap.js";
@@ -23,11 +24,12 @@ paths.jqvalidationunob = paths.nodeRoot + "jquery-validation-unobtrusive/jquery.
 paths.unobtrusiveAjax = paths.nodeRoot + "jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js";
 paths.bootstrapCssPath = paths.nodeRoot + "bootstrap/dist/css/bootstrap.css";
 paths.popper = paths.nodeRoot + "popper.js/dist/umd/popper.js";
-
+paths.fontawesome = paths.nodeRoot + "font-awesome/css/font-awesome.css";
 gulp.task("libs:clean",
     function(cb) {
         rimraf(paths.lib, cb);
     });
+
 
 gulp.task("scripts:copy",
     function() {
@@ -43,6 +45,6 @@ gulp.task("scripts:copy",
 
 gulp.task("css:copy",
     function() {
-        gulp.src([paths.bootstrapCssPath])
+        gulp.src([paths.bootstrapCssPath, paths.fontawesome])
             .pipe(gulp.dest(paths.lib));
     });
