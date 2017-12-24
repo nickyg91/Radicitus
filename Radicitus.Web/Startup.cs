@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Radicitus.SqlProviders;
 
 namespace Radicitus.Web
 {
@@ -18,6 +19,8 @@ namespace Radicitus.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            var connectionString = Configuration.GetConnectionString("RadSql");
+            services.AddSingleton<IRadSqlProvider>(new RadSqlProvider(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

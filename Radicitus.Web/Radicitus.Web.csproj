@@ -781,6 +781,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Radicitus.SqlProviders\Radicitus.SqlProviders.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="node_modules\popper.js\index.d.ts" />
   </ItemGroup>
 
