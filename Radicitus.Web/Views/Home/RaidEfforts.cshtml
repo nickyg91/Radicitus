@@ -1,28 +1,12 @@
-﻿@model RaidEffortsModel
-
-<div class="container mt-3">
-    <h1>W.H.O.R.Es</h1>
+﻿<div class="container mt-3">
+    <h1>
+        W.H.O.R.Es
+        <button class="btn btn-outline-primary">
+            <i class="fa fa-plus-square"></i>
+            Add
+        </button>
+    </h1>
     <h3>We Help Out Radicitus Efforts</h3>
-    <div class="row">
-        @foreach (var grid in Model.Grids)
-        {
-            <div class="col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">@grid.GridName</h4>
-                        <p class="card-text">
-                            @grid.DateCreated.ToShortDateString()
-                        </p>
-                        <p class="card-text">
-                            @grid.CostPerSquare
-                        </p>
-                        <a href="#" class="btn btn-primary">
-                            <i class="fa fa-eye"></i>
-                            View Grid
-                        </a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+    <hr />
+   @await Component.InvokeAsync("RenderAllGrids", null)
 </div>
