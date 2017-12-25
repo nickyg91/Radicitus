@@ -20,13 +20,14 @@ namespace Radicitus.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> RaidEfforts()
+        public IActionResult RaidEfforts()
         {
-            var model = new RaidEffortsModel
-            {
-                Grids = await _radSql.GetAllGridsAsync()
-            };
-            return View(model);
+            return View();
+        }
+
+        public IActionResult CreateGridModal()
+        {
+            return View();
         }
 
         public IActionResult Error()

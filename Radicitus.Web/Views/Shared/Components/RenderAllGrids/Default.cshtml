@@ -1,0 +1,26 @@
+﻿@model RaidEffortsModel
+@{
+    Layout = null;
+}
+<div class="row">
+    @foreach (var grid in Model.Grids)
+    {
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">@grid.GridName</h4>
+                    <p class="card-text">
+                        @grid.DateCreated.ToShortDateString()
+                    </p>
+                    <p class="card-text">
+                        @grid.CostPerSquare
+                    </p>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fa fa-eye"></i>
+                        View Grid
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
