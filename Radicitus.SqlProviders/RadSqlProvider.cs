@@ -20,7 +20,7 @@ namespace Radicitus.SqlProviders
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                const string sql = "INSERT INTO ( GridName, CostPerSquare, DateCreated ) rad.Grid VALUES ( @GridName, @CostPerSquare, GETDATE() ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
+                const string sql = "INSERT INTO rad.Grid ( GridName, CostPerSquare, DateCreated ) VALUES ( @GridName, @CostPerSquare, GETDATE() ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
                 var insertedGridId = await connection.ExecuteScalarAsync(sql, new { grid.GridName, grid.CostPerSquare });
                 return await connection.QuerySingleAsync<Grid>(
                     "SELECT GridName, CostPerSquare, DateCreated, GridId FROM rad.Grid WHERE GridId = @GridId",
@@ -52,7 +52,7 @@ namespace Radicitus.SqlProviders
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                const string sql = "SELECT GridName, GridId, DateCreated, CostPerSquare FROM rad.Grid";
+                const string sql = "SELECT TOP 100 GridName, GridId, DateCreated, CostPerSquare FROM rad.Grid ORDER BY DateCreated DESC";
                 return await connection.QueryAsync<Grid>(sql);
             }
             

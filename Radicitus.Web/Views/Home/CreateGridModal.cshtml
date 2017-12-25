@@ -10,40 +10,35 @@
                 <span aria-hidden="true"></span>
             </button>
         </div>
-        <div class="modal-body">
-            <form asp-contoller=""></form>
-            <div class="form-group">
-                <label>
-                </label>
-                <input id="memberName" type="text" placeholder="Name" class="form-control"/>
+        <form asp-controller="Grid" asp-action="AddGrid" 
+              data-ajax="true" 
+              data-ajax-method="POST"
+              data-ajax-success="GridHome.AddSuccess"
+              data-ajax-failure="GridHome.AddError">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>
+                        Grid Name
+                    </label>
+                    <input asp-for="GridName" class="form-control" placeholder="Name"/>
+                    <span class="invalid-feedback" asp-validation-for="GridName"></span>
+                </div>
+                <div class="form-group">
+                    <label>Gold Per Square</label>
+                    <input asp-for="CostPerSquare" class="form-control" placeholder="500" value="500"/>
+                    <span class="invalid-feedback" asp-validation-for="CostPerSquare"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label>
-                </label>
-                <input type="text" id="chosenNumbers" placeholder="1,2,3..." class="form-control"/>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                    Submit
+                </button>
+                <button type="reset" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fa fa-close"></i>
+                    Cancel
+                </button>
             </div>
-            <button id="addMember" class="btn btn-outline-primary">
-                <i class="fa fa-plus-square"></i>
-            </button>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>
-                    </th>
-                    <th>
-                    </th>
-                    <th>
-                    </th>
-                    <th>
-                    </th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary"></button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"></button>
-        </div>
+        </form>
     </div>
 </div>
