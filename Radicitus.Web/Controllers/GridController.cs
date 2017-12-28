@@ -10,7 +10,7 @@ namespace Radicitus.Web.Controllers
     public class GridController : Controller
     {
         private readonly IRadSqlProvider _radSql;
-
+        
         public GridController(IRadSqlProvider radSql)
         {
             _radSql = radSql;
@@ -29,7 +29,7 @@ namespace Radicitus.Web.Controllers
             {
                 CostPerSquare = grid.CostPerSquare,
                 GridName = grid.GridName
-            });
+            }).ConfigureAwait(false);
             return Json(insertedGrid);
         }
 
