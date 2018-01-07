@@ -28,24 +28,74 @@ namespace Radicitus.SqlProviders
             }
         }
 
-        public Task<IEnumerable<RadGridNumber>> InsertRadGridNumbersAsync(IEnumerable<RadGridNumber> radGridNumbers)
+        public async Task<IEnumerable<RadGridNumber>> InsertRadGridNumbersAsync(IEnumerable<RadGridNumber> radGridNumbers)
         {
-            throw new NotImplementedException();
+            var insertedGridNumbers = new List<RadGridNumber>();
+            //doing the naieve way for now until i feel less lazy to make the TVP interfaces.
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var transaction = connection.BeginTransaction())
+                {
+                    const string insertSql =
+                        "INSERT INTO rad.RadGridNumber ( GridId, GridNumber, RadMemberName, HasPaid ) VALUES ( @GridId, @GridNumber, @RadMemberName, @HasPaid ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
+                    const string selectBackInsertedRecord =
+                        "SELECT RadNumberId, GridId, RadMemberName, HasPaid FROM rad.RadGridNumber WHERE RadNumberId = @InsertedId";
+                    try
+                    {
+                        foreach (var radNumber in radGridNumbers)
+                        {
+                            var insertedId = await connection.ExecuteAsync(insertSql,
+                                new
+                                {
+                                    radNumber.GridId,
+                                    radNumber.GridNumber,
+                                    radNumber.RadMemberName,
+                                    radNumber.HasPaid
+                                });
+                            var insertedRecord =
+                                await connection.QuerySingleAsync<RadGridNumber>(selectBackInsertedRecord,
+                                    new {InsertedId = insertedId});
+                            insertedGridNumbers.Add(insertedRecord);
+                        }
+                        transaction.Commit();
+                        return insertedGridNumbers;
+                    }
+                    catch (SqlException)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
-        public Task<int> GetTotalCostAmountForGridIdAsync(int gridId)
+        public async Task<int> GetTotalCostAmountForGridIdAsync(int gridId, int gridSquareCost)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "SELECT COUNT(*) FROM rad.RadGridNumber WHERE GridId = @GridId";
+                return await connection.ExecuteScalarAsync<int>(sql, new { GridId = gridId }) * gridSquareCost; 
+            }
         }
 
-        public Task<IEnumerable<RadGridNumber>> GetMemberNumbersForGridIdAsync(int gridId)
+        public async Task<IEnumerable<RadGridNumber>> GetMemberNumbersForGridIdAsync(int gridId)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql =
+                    "SELECT RadNumberId, GridId, GridNumber, RadNemberName, HasPaid FROM rad.RadGridNumber WHERE GridId = @GridId";
+                return await connection.QueryAsync<RadGridNumber>(sql, new { GridId = gridId });
+            }
         }
 
-        public Task<Grid> GetGridByGridIdAsync(int gridId)
+        public async Task<Grid> GetGridByGridIdAsync(int gridId)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql =
+                    "SELECT GridName, GridId, DateCreated, CostPerSquare FROM rad.Grid WHERE GridId = @GridId";
+                return await connection.QuerySingleAsync<Grid>(sql, new {GridId = gridId});
+            }
         }
 
         public async Task<IEnumerable<Grid>> GetAllGridsAsync()
