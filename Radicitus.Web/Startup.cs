@@ -41,6 +41,10 @@ namespace Radicitus.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "requiredId",
+                    template: "{controller=Home}/{action=Index}/{id}");
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

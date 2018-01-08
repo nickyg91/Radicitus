@@ -1,0 +1,40 @@
+﻿@model ViewGridModel
+<div class="container mt-3">
+    <h2>
+        @Model.Grid.GridName
+    </h2>
+    <hr />
+    <div class="col-12">
+        <div>
+            <h4>
+                Cost Per Square: @Model.Grid.CostPerSquare
+            </h4>
+            <h4>
+                Date Created: @Model.Grid.DateCreated.ToShortDateString()
+            </h4>
+        </div>
+        <div>
+            <button class="btn btn-info">
+                <i class="fa fa-plus"></i>
+                Add Members
+            </button>
+        </div>
+    </div>
+    @for (var i = 1; i <= 100; i++)
+    {
+        <div>
+            @for (var j = 1; j <= 10; j++)
+            {
+                <div class="col-2">
+                    test
+                </div>
+            }
+        </div>
+    }
+</div>
+<div id="addMemberModal" class="modal" tabindex="-1" role="dialog">
+    @*@{Html.RenderPartial("CreateGridModal");}*@
+</div>
+@section scripts{
+    <script src="js/members.js" type="text/javascript"></script>
+}

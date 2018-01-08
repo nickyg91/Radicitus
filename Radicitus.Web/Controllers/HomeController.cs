@@ -8,13 +8,6 @@ namespace Radicitus.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRadSqlProvider _radSql;
-
-        public HomeController(IRadSqlProvider radSql)
-        {
-            _radSql = radSql;
-        }
-
         public IActionResult Index()
         {
             return View();

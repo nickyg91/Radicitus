@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Radicitus.Entities;
@@ -108,19 +108,24 @@ namespace Radicitus.SqlProviders
             
         }
 
-        public Task<HashSet<int>> GetAllUsedNumbersForGridAsync(int gridId)
+        public async Task<HashSet<int>> GetAllUsedNumbersForGridAsync(int gridId)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "SELECT GridNumber FROM rad.RadGridNumber WHERE GridId = @GridId";
+                return await connection.QueryAsync<int>(sql, new {GridId = gridId}) as HashSet<int>;
+            }
         }
 
-        public Task<Dictionary<int, RadGridNumber>> GetMemberNumbersForGridAsynv(int gridId)
+        public async Task<Dictionary<int, RadGridNumber>> GetMemberNumbersForGridAsync(int gridId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> InsertMemberNumbersAsync(List<RadGridNumber> numbers)
-        {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql =
+                    "SELECT RadNumberId, GridId, GridNumber, RadMemberName FROM rad.RadGridNumber WHERE GridId = @GridId";
+                return (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId})).ToDictionary(
+                    x => x.GridNumber, x => x);
+            }
         }
     }
 }

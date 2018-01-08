@@ -38,5 +38,15 @@ namespace Radicitus.Web.Controllers
         {
             return ViewComponent("RenderAllGrids");
         }
+
+        public async Task<IActionResult> ViewGrid(int id)
+        {
+            return View(new ViewGridModel
+            {
+                Grid = await _radSql.GetGridByGridIdAsync(id),
+                MemberNumbers = await _radSql.GetMemberNumbersForGridAsync(id),
+                UsedNumbers = await _radSql.GetAllUsedNumbersForGridAsync(id)
+            });
+        }
     }
 }
