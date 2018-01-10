@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Radicitus.Entities;
@@ -32,6 +34,25 @@ namespace Radicitus.Web.Controllers
             }).ConfigureAwait(false);
             return Json(insertedGrid);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddMembers(AddMembersModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        Response.StatusCode = (int) HttpStatusCode.BadRequest;
+        //        return Json(new {Message = "Invalid data submitted."});
+        //    }
+
+        //    var radNumbers = new List<RadGridNumber>();
+
+        //    foreach (var member in model.Members)
+        //    {
+                
+        //    }
+
+        //    var insertedMembers = await _radSql.InsertRadGridNumbersAsync();
+        //}
 
         [HttpGet]
         public IActionResult GetAllGridsPartial()

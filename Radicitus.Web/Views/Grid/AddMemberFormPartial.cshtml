@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+@model RadMemberModel
+
+<form>
+    <div class="form-group">
+        <label>
+            Member Name
+        </label>
+        <input asp-for="MemberName" id="memberNameTextBox" class="form-control" placeholder="Name"/>
+    </div>
+    <div class="form-group">
+        <label>
+            Member Numbers
+        </label>
+    </div>
+    <textarea asp-for="NumberCsv" placeholder="1,2,3..."></textarea>
+    <button type="button" class="btn btn-primary">
+        <i class="fa fa-eye"></i>
+        Add
+    </button>
+</form>
