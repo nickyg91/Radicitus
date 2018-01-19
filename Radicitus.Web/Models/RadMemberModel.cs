@@ -8,7 +8,7 @@ namespace Radicitus.Web.Models
     {
         [Required(ErrorMessage = "Member Name cannot be empty.")]
         public string MemberName { get; set; }
-        [RegularExpression("^((\\d+)(,\\d+){4})$", 
+        [RegularExpression("^((\\d+)(,\\d+)*){1,5}$", 
             ErrorMessage = "The box must contain a comma separated list of numbers.")]
         public string NumberCsv { get; set; }
         public List<int> GridNumbers => NumberCsv.Split(",").Select(int.Parse).ToList();

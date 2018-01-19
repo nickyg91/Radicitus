@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +53,25 @@ namespace Radicitus.Web.Controllers
 
         //    var insertedMembers = await _radSql.InsertRadGridNumbersAsync();
         //}
+
+        [HttpGet]
+        public async Task<IActionResult> RandomizeNumbers(int totalNumbers, int gridId)
+        {
+            var gridNumbersTaken = await _radSql.GetAllUsedNumbersForGridAsync(gridId);
+            var rand = new Random();
+            var generatedNumbers = new List<int>();
+            for (var i = 0; i < totalNumbers; i++)
+            {
+                var randomNumber = rand.Next(1, 100);
+                while (gridNumbersTaken != null && !gridNumbersTaken.Contains(randomNumber))
+                {
+                    randomNumber = rand.Next(1, 100);
+                }
+                generatedNumbers.Add(randomNumber);
+            }
+
+            return Json(new { numbers = string.Join(",", generatedNumbers) });
+        }
 
         [HttpGet]
         public IActionResult GetAllGridsPartial()

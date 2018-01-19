@@ -1,9 +1,10 @@
 ﻿@model ViewGridModel
 <div class="container mt-3">
+    <input type="hidden" id="hiddenGridId" value="@Model.Grid.GridId"/>
     <h2>
         @Model.Grid.GridName
     </h2>
-    <hr />
+    <hr/>
     <div class="col-12">
         <div>
             <h4>
@@ -14,17 +15,16 @@
             </h4>
         </div>
         <div>
-            <button class="btn btn-info">
+            <button class="btn btn-info" data-toggle="modal" data-target="#addMemberModal">
                 <i class="fa fa-plus"></i>
                 Add Members
             </button>
         </div>
     </div>
-    
 </div>
 <div id="addMemberModal" class="modal" tabindex="-1" role="dialog">
-    @*@{Html.RenderPartial("CreateGridModal");}*@
+    @{Html.RenderPartial("AddMembersModal");}
 </div>
-@section scripts{
-    <script src="js/members.js" type="text/javascript"></script>
+@section Scripts{
+    <script src="~/js/members.js" type="text/javascript"></script>
 }

@@ -1,11 +1,4 @@
-﻿(function() {
-    GridHome.Init();
-});
-
-var GridHome = {
-    Init: function() {
-
-    },
+﻿var GridHome = {
     AddSuccess: function(result) {
         $.get("/Grid/GetAllGridsPartial",
             function (data) {

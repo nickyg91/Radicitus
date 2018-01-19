@@ -41,6 +41,10 @@ namespace Radicitus.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "randomizeNumbers",
+                    template: "{controller}/{action}/{totalNumbers}/{gridId}");
+
+                routes.MapRoute(
                     name: "requiredId",
                     template: "{controller=Home}/{action=Index}/{id}");
 

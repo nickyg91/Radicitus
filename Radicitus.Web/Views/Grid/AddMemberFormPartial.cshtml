@@ -3,20 +3,33 @@
 }
 @model RadMemberModel
 
-<form>
+<form id="addMemberToTableForm">
     <div class="form-group">
         <label>
             Member Name
         </label>
-        <input asp-for="MemberName" id="memberNameTextBox" class="form-control" placeholder="Name"/>
+        <input asp-for="MemberName" id="memberNameTextBox" class="form-control" placeholder="Name" />
     </div>
     <div class="form-group">
         <label>
             Member Numbers
         </label>
+        <div class="form-group">
+            <label>
+                If you want to randomize, how many?
+            </label>
+            <input id="totalNumbersToRandomize" max="5" type="number" class="form-control" />
+        </div>
     </div>
-    <textarea asp-for="NumberCsv" placeholder="1,2,3..."></textarea>
-    <button type="button" class="btn btn-primary">
+    <div class="form-group">
+        <button type="button" disabled="disabled" id="randomizeNumbers" class="btn btn-outline-warning">
+            Randomize
+        </button>
+    </div>
+    <div class="form-group">
+        <textarea asp-for="NumberCsv" id="numbersTextArea" class="form-control" placeholder="1,2,3..."></textarea>
+    </div>
+    <button type="button" id="addMemberToTable" class="btn btn-primary">
         <i class="fa fa-eye"></i>
         Add
     </button>

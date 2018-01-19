@@ -1,7 +1,6 @@
 ﻿@{
     Layout = null;
 }
-@model AddMembersModel
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -9,9 +8,16 @@
                 Add Members
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true"></span>
+                <span aria-hidden="true">x</span>
             </button>
         </div>
-        
+        <div class="modal-body">
+            @{ Html.RenderPartial("AddMemberFormPartial", new RadMemberModel()); }
+            @{ Html.RenderPartial("MembersTablePartial", new List<RadMemberModel>()); }
+            <button type="button" class="btn btn-success">
+                <i class="fa fa-paper-plane"></i>
+                Submit Members
+            </button>
+        </div>
     </div>
 </div>
