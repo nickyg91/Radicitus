@@ -44,15 +44,18 @@ namespace Radicitus.Web
             {
                 routes.MapRoute(
                     name: "randomizeNumbers",
-                    template: "{controller}/{action}/{totalNumbers}/{gridId}");
+                    template: "{controller}/{action}/{totalNumbers}/{gridId}"
+                );
 
                 routes.MapRoute(
                     name: "requiredId",
-                    template: "{controller=Home}/{action=Index}/{id}");
+                    template: "{controller=Home}/{action=Index}/{id}"
+                );
 
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                );
             });
         }
     }

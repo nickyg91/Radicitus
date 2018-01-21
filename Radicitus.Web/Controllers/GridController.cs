@@ -38,24 +38,35 @@ namespace Radicitus.Web.Controllers
             return Json(insertedGrid);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddMembers(AddMembersModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        Response.StatusCode = (int) HttpStatusCode.BadRequest;
-        //        return Json(new {Message = "Invalid data submitted."});
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> AddMembers(List<RadMemberModel> members)
+        {
+            if (!ModelState.IsValid)
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return Json(new {Message = "Invalid data submitted."});
+            }
 
-        //    var radNumbers = new List<RadGridNumber>();
+            var radNumbers = new List<RadGridNumber>();
+            var gridId = members.First().GridId;
+            var memberDictionary = members.ToDictionary(x => x.MemberName, x => x.GridNumbers);
+            
+            foreach (var member in memberDictionary)
+            {
+                var radGridNumbers = member.Value.Select(x => new RadGridNumber
+                {
+                    GridId = gridId,
+                    GridNumber = x,
+                    RadMemberName = member.Key
+                });
+                radNumbers.AddRange(radGridNumbers);
+            }
 
-        //    foreach (var member in model.Members)
-        //    {
-                
-        //    }
-
-        //    var insertedMembers = await _radSql.InsertRadGridNumbersAsync();
-        //}
+            var insertedMembers = (await _radSql.InsertRadGridNumbersAsync(radNumbers)).ToList();
+            return insertedMembers.Count == radNumbers.Count 
+                ? Json(new {Message = "All members were inserted correctly!", Members = insertedMembers}) 
+                : Json(new { Message = "Error: Some members were not inserted."});
+        }
 
         [HttpGet]
         public async Task<IActionResult> RandomizeNumbers(int totalNumbers, int gridId)
@@ -73,25 +84,59 @@ namespace Radicitus.Web.Controllers
                 }
             }
             var rand = new Random();
-            var generatedNumbers = new List<int>();
+            var generatedNumbers = new HashSet<int>();
             for (var i = 0; i < totalNumbers; i++)
             {
                 var randomNumber = rand.Next(1, 100);
-                while (gridNumbersTaken != null && gridNumbersTaken.Contains(randomNumber))
+                while (gridNumbersTaken != null && gridNumbersTaken.Contains(randomNumber)
+                    || generatedNumbers.Contains(randomNumber))
                 {
                     randomNumber = rand.Next(1, 100);
                 }
+
                 generatedNumbers.Add(randomNumber);
             }
 
             return Json(new { numbers = string.Join(",", generatedNumbers) });
         }
 
+        [HttpGet]
+        public void ClearGridState(int id)
+        {
+            Session.Remove(id.ToString());
+            Session.CommitAsync();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DrawWinner(int id)
+        {
+            var winner = await _radSql.DrawWinner(id);
+            return Json(new {Message = string.IsNullOrEmpty(winner) ? "Nobody won!" : $"{winner} won the board!"});
+        }
+
         [HttpPost]
-        public IActionResult AddMember(RadMemberModel member)
+        public async Task<IActionResult> AddMember(RadMemberModel member)
         {
             var memberDictionary = Session
                 .GetObjectFromJson<Dictionary<string, RadMemberModel>>(member.GridId.ToString());
+            var takenNumbers = (await _radSql.GetMemberNumbersForGridAsync(member.GridId)).Select(x => x.Key);
+
+            var allTakenNumbers = memberDictionary?.SelectMany(x => x.Value.GridNumbers).ToList() ?? new List<int>();
+                
+            allTakenNumbers.AddRange(takenNumbers);
+            var duplicateNumbers = member.GridNumbers.Where(number => allTakenNumbers.Contains(number)).ToList();
+
+            if (duplicateNumbers.Any())
+            {
+                Response.StatusCode = (int) HttpStatusCode.Found;
+                return Json(
+                    new
+                    {
+                        Message =
+                        $"{member.MemberName} has not been added! Duplicate numbers found! {string.Join(",", duplicateNumbers)}"
+                    });
+            }
+
             if (memberDictionary != null)
             {
                 var isMemberStored = memberDictionary.ContainsKey(member.MemberName.ToLower());
@@ -105,17 +150,17 @@ namespace Radicitus.Web.Controllers
                             $"{member.MemberName} has been added to this grid already. To change their numbers, remove and re-add them."
                         });
                 }
+                
                 memberDictionary.Add(member.MemberName, member);
                 Session.SetObjectAsJson(member.GridId.ToString(), memberDictionary);
+                await Session.CommitAsync();
             }
-            else
+            memberDictionary = new Dictionary<string, RadMemberModel>
             {
-                memberDictionary = new Dictionary<string, RadMemberModel>
-                {
-                    { member.MemberName, member }
-                };
-                Session.SetObjectAsJson(member.GridId.ToString(), memberDictionary);
-            }
+                { member.MemberName.ToLower(), member }
+            };
+            Session.SetObjectAsJson(member.GridId.ToString(), memberDictionary);
+            await Session.CommitAsync();
             return Json(
                 new
                 {

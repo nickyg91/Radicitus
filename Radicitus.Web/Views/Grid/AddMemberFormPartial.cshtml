@@ -29,8 +29,18 @@
     <div class="form-group">
         <textarea asp-for="NumberCsv" id="numbersTextArea" class="form-control" placeholder="1,2,3..."></textarea>
     </div>
-    <button type="button" id="addMemberToTable" class="btn btn-primary">
-        <i class="fa fa-eye"></i>
-        Add
-    </button>
+    <div class="form-group">
+        <div class="col-2">
+            <button type="button" id="addMemberToTable" class="btn btn-primary">
+                <i class="fa fa-eye"></i>
+                Add
+            </button>
+        </div>
+
+    </div>
+    <div class="form-group">
+        @* ReSharper disable once UnknownCssClass *@
+        <div class="col-12" id="alertArea">
+        </div>
+    </div>
 </form>

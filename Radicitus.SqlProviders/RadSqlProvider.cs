@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Dapper;
 using Radicitus.Entities;
 
@@ -34,38 +36,30 @@ namespace Radicitus.SqlProviders
             //doing the naieve way for now until i feel less lazy to make the TVP interfaces.
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var transaction = connection.BeginTransaction())
-                {
+                //using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                //{
                     const string insertSql =
-                        "INSERT INTO rad.RadGridNumber ( GridId, GridNumber, RadMemberName, HasPaid ) VALUES ( @GridId, @GridNumber, @RadMemberName, @HasPaid ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
+                        "INSERT INTO rad.RadGridNumber ( GridId, GridNumber, RadMemberName, HasWon ) VALUES ( @GridId, @GridNumber, @RadMemberName, @HasWon ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
                     const string selectBackInsertedRecord =
-                        "SELECT RadNumberId, GridId, RadMemberName, HasPaid FROM rad.RadGridNumber WHERE RadNumberId = @InsertedId";
-                    try
+                        "SELECT RadNumberId, GridId, RadMemberName, HasWon FROM rad.RadGridNumber WHERE RadNumberId = @InsertedId";
+                    foreach (var radNumber in radGridNumbers)
                     {
-                        foreach (var radNumber in radGridNumbers)
-                        {
-                            var insertedId = await connection.ExecuteAsync(insertSql,
-                                new
-                                {
-                                    radNumber.GridId,
-                                    radNumber.GridNumber,
-                                    radNumber.RadMemberName,
-                                    radNumber.HasPaid
-                                });
-                            var insertedRecord =
-                                await connection.QuerySingleAsync<RadGridNumber>(selectBackInsertedRecord,
-                                    new {InsertedId = insertedId});
-                            insertedGridNumbers.Add(insertedRecord);
-                        }
-                        transaction.Commit();
-                        return insertedGridNumbers;
+                        var insertedId = await connection.ExecuteAsync(insertSql,
+                            new
+                            {
+                                radNumber.GridId,
+                                radNumber.GridNumber,
+                                radNumber.RadMemberName,
+                                radNumber.HasWon
+                            });
+                        var insertedRecord =
+                            await connection.QuerySingleAsync<RadGridNumber>(selectBackInsertedRecord,
+                                new {InsertedId = insertedId});
+                        insertedGridNumbers.Add(insertedRecord);
                     }
-                    catch (SqlException)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
+                    //transaction.Complete();
+                    return insertedGridNumbers;
+                //}
             }
         }
 
@@ -83,7 +77,7 @@ namespace Radicitus.SqlProviders
             using (var connection = new SqlConnection(_connectionString))
             {
                 const string sql =
-                    "SELECT RadNumberId, GridId, GridNumber, RadNemberName, HasPaid FROM rad.RadGridNumber WHERE GridId = @GridId";
+                    "SELECT RadNumberId, GridId, GridNumber, RadNemberName, HasWon FROM rad.RadGridNumber WHERE GridId = @GridId";
                 return await connection.QueryAsync<RadGridNumber>(sql, new { GridId = gridId });
             }
         }
@@ -113,7 +107,7 @@ namespace Radicitus.SqlProviders
             using (var connection = new SqlConnection(_connectionString))
             {
                 const string sql = "SELECT GridNumber FROM rad.RadGridNumber WHERE GridId = @GridId";
-                return await connection.QueryAsync<int>(sql, new {GridId = gridId}) as HashSet<int>;
+                return (await connection.QueryAsync<int>(sql, new {GridId = gridId})).ToHashSet();
             }
         }
 
@@ -125,6 +119,26 @@ namespace Radicitus.SqlProviders
                     "SELECT RadNumberId, GridId, GridNumber, RadMemberName FROM rad.RadGridNumber WHERE GridId = @GridId";
                 return (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId})).ToDictionary(
                     x => x.GridNumber, x => x);
+            }
+        }
+
+        public async Task<string> DrawWinner(int gridId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var randomNumber = new Random();
+                var rand = randomNumber.Next(0, 100);
+                const string sql =
+                    "UPDATE rad.RadGridNumber SET HasWon = 0 WHERE GridId = @GridId; SELECT RadMemberName FROM rad.RadGridNumber WHERE GridId = @GridId AND GridNumber = @GridNumber";
+                const string updateWinnerSql =
+                    "UPDATE rad.RadGridNumber SET HasWon = 1 WHERE GridNumber = @GridNumber AND GridId = @GridId";
+                var winner = (await connection.QueryAsync<string>(sql, new {GridId = gridId, GridNumber = rand}))
+                    .FirstOrDefault();
+                if (!string.IsNullOrEmpty(winner))
+                {
+                    await connection.QueryAsync<string>(updateWinnerSql, new {GridId = gridId, GridNumber = rand});
+                }
+                return winner;
             }
         }
     }
