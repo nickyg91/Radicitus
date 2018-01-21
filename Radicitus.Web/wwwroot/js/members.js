@@ -56,7 +56,6 @@
                 function(index) {
                     var number = addedMembers[index].gridNumber;
                     var name = addedMembers[index].radMemberName;
-                    $("#number_" + number).append(number);
                     $("#name_" + number).empty().append("<strong>" + name + "</strong>");
                     $("#itemContainer_" + number).addClass("text-white ");
                     $("#itemContainer_" + number).parent().addClass("bg-primary");

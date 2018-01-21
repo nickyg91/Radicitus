@@ -40,10 +40,10 @@ namespace Radicitus.SqlProviders
                     const string insertSql =
                         "INSERT INTO rad.RadGridNumber ( GridId, GridNumber, RadMemberName, HasWon ) VALUES ( @GridId, @GridNumber, @RadMemberName, @HasWon ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
                     const string selectBackInsertedRecord =
-                        "SELECT RadNumberId, GridId, RadMemberName, HasWon FROM rad.RadGridNumber WHERE RadNumberId = @InsertedId";
+                        "SELECT RadNumberId, GridId, RadMemberName, HasWon, GridNumber FROM rad.RadGridNumber WHERE RadNumberId = @InsertedId";
                     foreach (var radNumber in radGridNumbers)
                     {
-                        var insertedId = await connection.ExecuteAsync(insertSql,
+                        var insertedId = await connection.ExecuteScalarAsync<int>(insertSql,
                             new
                             {
                                 radNumber.GridId,
