@@ -1,16 +1,11 @@
-﻿(function() {
-    GridHome.Init();
-});
-
-var GridHome = {
-    Init: function() {
-
-    },
+﻿var GridHome = {
     AddSuccess: function(result) {
         $.get("/Grid/GetAllGridsPartial",
-            function(data) {
-                $("#gridsDisplay").empty().append(data);
-                $("#addGridModal").modal("hide");
+            function (data) {
+                bootbox.alert("The grid was added successfully!", function() {
+                    $("#gridsDisplay").empty().append(data);
+                    $("#addGridModal").modal("hide");
+                });
             });
     },
     AddError: function () {

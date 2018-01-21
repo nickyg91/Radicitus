@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Radicitus.Entities
 {
     public class RadGridNumber
@@ -10,5 +7,6 @@ namespace Radicitus.Entities
         public int GridId { get; set; }
         public int GridNumber { get; set; }
         public string RadMemberName { get; set; }
+        public bool HasWon { get; set; }
     }
 }

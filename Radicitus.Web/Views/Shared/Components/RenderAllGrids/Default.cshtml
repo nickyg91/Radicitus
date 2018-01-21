@@ -15,7 +15,7 @@
                     <p class="card-text">
                         @grid.CostPerSquare
                     </p>
-                    <a href="#" class="btn btn-primary">
+                    <a asp-controller="Grid" asp-action="ViewGrid" asp-route-id="@grid.GridId" class="btn btn-primary">
                         <i class="fa fa-eye"></i>
                         View Grid
                     </a>
