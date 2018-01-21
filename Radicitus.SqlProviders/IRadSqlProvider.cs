@@ -14,6 +14,6 @@ namespace Radicitus.SqlProviders
         Task<IEnumerable<Grid>> GetAllGridsAsync();
         Task<HashSet<int>> GetAllUsedNumbersForGridAsync(int gridId);
         Task<Dictionary<int, RadGridNumber>> GetMemberNumbersForGridAsync(int gridId);
-        Task<string> DrawWinner(int gridId);
+        Task<RadGridNumber> DrawWinner(int gridId);
     }
 }

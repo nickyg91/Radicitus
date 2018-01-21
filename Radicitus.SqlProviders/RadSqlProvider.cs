@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Radicitus.Entities;
 
@@ -122,19 +121,19 @@ namespace Radicitus.SqlProviders
             }
         }
 
-        public async Task<string> DrawWinner(int gridId)
+        public async Task<RadGridNumber> DrawWinner(int gridId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var randomNumber = new Random();
                 var rand = randomNumber.Next(0, 100);
                 const string sql =
-                    "UPDATE rad.RadGridNumber SET HasWon = 0 WHERE GridId = @GridId; SELECT RadMemberName FROM rad.RadGridNumber WHERE GridId = @GridId AND GridNumber = @GridNumber";
+                    "UPDATE rad.RadGridNumber SET HasWon = 0 WHERE GridId = @GridId; SELECT RadMemberName, GridNumber FROM rad.RadGridNumber WHERE GridId = @GridId AND GridNumber = @GridNumber";
                 const string updateWinnerSql =
                     "UPDATE rad.RadGridNumber SET HasWon = 1 WHERE GridNumber = @GridNumber AND GridId = @GridId";
-                var winner = (await connection.QueryAsync<string>(sql, new {GridId = gridId, GridNumber = rand}))
+                var winner = (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId, GridNumber = rand}))
                     .FirstOrDefault();
-                if (!string.IsNullOrEmpty(winner))
+                if (winner != null)
                 {
                     await connection.QueryAsync<string>(updateWinnerSql, new {GridId = gridId, GridNumber = rand});
                 }

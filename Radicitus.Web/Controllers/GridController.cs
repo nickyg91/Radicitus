@@ -111,7 +111,7 @@ namespace Radicitus.Web.Controllers
         public async Task<IActionResult> DrawWinner(int id)
         {
             var winner = await _radSql.DrawWinner(id);
-            return Json(new {Message = string.IsNullOrEmpty(winner) ? "Nobody won!" : $"{winner} won the board!"});
+            return Json(new {Message = winner == null ? "Nobody won!" : $"{winner.RadMemberName} won the board with # {winner.GridNumber}!"});
         }
 
         [HttpPost]
@@ -124,6 +124,16 @@ namespace Radicitus.Web.Controllers
             var allTakenNumbers = memberDictionary?.SelectMany(x => x.Value.GridNumbers).ToList() ?? new List<int>();
                 
             allTakenNumbers.AddRange(takenNumbers);
+
+            if (allTakenNumbers.Count + member.GridNumbers.Count > 100)
+            {
+                return Json(new {Message = "The amount of numbers provided would put the total over the limit."});
+            }
+            if (allTakenNumbers.Count == 100)
+            {
+                return Json(new { Message = "There are no available numbers left!" });
+            }
+
             var duplicateNumbers = member.GridNumbers.Where(number => allTakenNumbers.Contains(number)).ToList();
 
             if (duplicateNumbers.Any())
