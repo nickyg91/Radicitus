@@ -93,7 +93,6 @@ namespace Radicitus.Web.Controllers
                 {
                     randomNumber = rand.Next(1, 100);
                 }
-
                 generatedNumbers.Add(randomNumber);
             }
 
@@ -160,17 +159,18 @@ namespace Radicitus.Web.Controllers
                             $"{member.MemberName} has been added to this grid already. To change their numbers, remove and re-add them."
                         });
                 }
-                
+
                 memberDictionary.Add(member.MemberName, member);
                 Session.SetObjectAsJson(member.GridId.ToString(), memberDictionary);
-                await Session.CommitAsync();
             }
-            memberDictionary = new Dictionary<string, RadMemberModel>
+            else
             {
-                { member.MemberName.ToLower(), member }
-            };
+                memberDictionary = new Dictionary<string, RadMemberModel>
+                {
+                    { member.MemberName.ToLower(), member }
+                };
+            }
             Session.SetObjectAsJson(member.GridId.ToString(), memberDictionary);
-            await Session.CommitAsync();
             return Json(
                 new
                 {
