@@ -1,22 +1,43 @@
 ﻿var MemberGrid = {
     Init: function () {
-        var members = [];
+        //var members = [];
+        var gridId = $("#hiddenGridId").val();
 
-        var randomizeNumbers = function (totalNumbers, gridId) {
+        var randomizeNumbers = function (totalNumbers) {
             $.get("/Grid/RandomizeNumbers/" + totalNumbers + "/" + gridId,
                 function (result) {
                     $("#numbersTextArea").val(result.numbers);
+                }).fail(function(result) {
+                    bootbox.alert(result.message);
                 });
         };
         
-        var addMemberToTable = function(member) {
+        var addMemberToTable = function (member) {
+            member.GridId = gridId;
+            $.post("/Grid/AddMember",
+                { "member": member },
+                function(result) {
+                    $("#addMemberModal").modal("hide");
+                    bootbox.alert(result.message,
+                        function() {
+                            $("#addMemberModal").modal("show");
+                            var tr = "<tr><td>" + member.MemberName + "</td><td> " + member.NumberCsv + "</td><td></td></tr>";
+                            if ($("#memberTable > tbody > tr").length === 0) {
+                                $("#memberTable > tbody").append(tr);
+                            } else {
+                                $("#memberTable > tbody > tr").after(tr);
+                            }
+                            $("#addMemberToTableForm")[0].reset();
+                        });
+
+                }).fail(function(result) {
+                $("#addMemberModal").modal("hide");
+                bootbox.alert(result.message,
+                    function() {
+                        $("#addMemberModal").modal("show");
+                    });
+                });
             //we will get fancy later with jq data tables.
-            var tr = "<tr><td>" + member.MemberName + "</td><td> " + member.NumberCsv + "</td><td></td></tr>";
-            if ($("#memberTable > tbody > tr").length === 0) {
-                $("#memberTable > tbody").append(tr);
-            } else {
-                $("#memberTable > tbody > tr").after(tr);
-            }
             
         };
 
@@ -33,7 +54,8 @@
 
         $("#randomizeNumbers").on("click",
             function () {
-                randomizeNumbers($("#totalNumbersToRandomize").val(), $("#hiddenGridId").val());
+                var totalNumbers = $("#totalNumbersToRandomize").val();
+                randomizeNumbers(totalNumbers);
             });
 
         $("#totalNumbersToRandomize").on("change",

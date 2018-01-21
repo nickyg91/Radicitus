@@ -18,6 +18,8 @@ namespace Radicitus.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
+            services.AddDistributedMemoryCache();
             services.AddMvc();
             var connectionString = Configuration.GetConnectionString("RadSql");
             services.AddSingleton<IRadSqlProvider>(new RadSqlProvider(connectionString));
@@ -37,7 +39,7 @@ namespace Radicitus.Web
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

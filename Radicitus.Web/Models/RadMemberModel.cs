@@ -12,5 +12,6 @@ namespace Radicitus.Web.Models
             ErrorMessage = "The box must contain a comma separated list of numbers.")]
         public string NumberCsv { get; set; }
         public List<int> GridNumbers => NumberCsv.Split(",").Select(int.Parse).ToList();
+        public int GridId { get; set; }
     }
 }
