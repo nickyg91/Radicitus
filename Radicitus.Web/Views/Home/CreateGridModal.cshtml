@@ -1,0 +1,43 @@
+﻿@model GridModel
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Add W.H.O.R.E
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
+        <form asp-controller="Grid" asp-action="AddGrid" 
+              data-ajax="true" 
+              data-ajax-method="POST"
+              data-ajax-success="GridHome.AddSuccess"
+              data-ajax-failure="GridHome.AddError">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>
+                        Grid Name
+                    </label>
+                    <input asp-for="GridName" class="form-control" placeholder="Name"/>
+                    <span class="invalid-feedback" asp-validation-for="GridName"></span>
+                </div>
+                <div class="form-group">
+                    <label>Gold Per Square</label>
+                    <input asp-for="CostPerSquare" class="form-control" placeholder="500" value="500"/>
+                    <span class="invalid-feedback" asp-validation-for="CostPerSquare"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                    Submit
+                </button>
+                <button type="reset" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fa fa-close"></i>
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

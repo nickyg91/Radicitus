@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {
+    "bootstrap": "4.0.0",
+    "jquery": "3.2.1",
+    "jquery-validation": "1.17.0",
+    "jquery-validation-unobtrusive": "3.2.6",
+    "jquery-ajax-unobtrusive": "3.2.4",
+    "bootbox": "4.4.0",
+    "gulp": "3.9.1",
+    "rimraf": "2.6.1",
+    "gulp-concat": "2.6.1",
+    "gulp-cssmin": "0.2.0",
+    "gulp-copy": "1.0.1",
+    "gulp-uglify": "1.0.1",
+    "popper.js": "1.12.3",
+    "font-awesome": "4.7.0"
+  }
+}
