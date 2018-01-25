@@ -29,6 +29,23 @@
                     <a class="nav-link" href="@Url.Action("RaidEfforts", "Home")">Raid Efforts <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="nav-link" asp-action="LogOut" asp-controller="Account">
+                            @($"Hello, {User.Identity.Name}! Click here to log out.")
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" asp-action="LogIn" asp-controller="Account">
+                            Log In
+                        </a>
+                    }
+                    
+                </li>
+            </ul>
         </div>
     </nav>
 
