@@ -14,14 +14,17 @@
                 <h4>
                     Date Created: @Model.Grid.DateCreated.ToShortDateString()
                 </h4>
-                <button class="btn btn-info" data-toggle="modal" data-target="#addMemberModal">
-                    <i class="fa fa-plus"></i>
-                    Add Members
-                </button>
-                <button class="btn btn-warning" id="drawWinnerButton">
-                    <i class="fa fa-user"></i>
-                    Draw a Winner!
-                </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="btn btn-info" data-toggle="modal" data-target="#addMemberModal">
+                        <i class="fa fa-plus"></i>
+                        Add Members
+                    </button>
+                    <button class="btn btn-warning" id="drawWinnerButton">
+                        <i class="fa fa-user"></i>
+                        Draw a Winner!
+                    </button>
+                }
             </div>
         </div>
         <div class="col-6">
@@ -69,9 +72,12 @@
         }
     </div>
 </div>
-<div id="addMemberModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1" role="dialog">
-    @{Html.RenderPartial("AddMembersModal");}
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="addMemberModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1" role="dialog">
+        @{Html.RenderPartial("AddMembersModal");}
+    </div>
+}
 @section Scripts{
     <script src="~/js/members.js" type="text/javascript"></script>
 }

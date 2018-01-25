@@ -50,10 +50,10 @@ namespace Radicitus.SqlProviders
                                 radNumber.GridNumber,
                                 radNumber.RadMemberName,
                                 radNumber.HasWon
-                            });
+                            }).ConfigureAwait(false);
                         var insertedRecord =
                             await connection.QuerySingleAsync<RadGridNumber>(selectBackInsertedRecord,
-                                new {InsertedId = insertedId});
+                                new {InsertedId = insertedId}).ConfigureAwait(false);
                         insertedGridNumbers.Add(insertedRecord);
                     }
                     //transaction.Complete();
@@ -116,7 +116,8 @@ namespace Radicitus.SqlProviders
             {
                 const string sql =
                     "SELECT RadNumberId, GridId, GridNumber, RadMemberName FROM rad.RadGridNumber WHERE GridId = @GridId";
-                return (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId})).ToDictionary(
+                return (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId})
+                    .ConfigureAwait(false)).ToDictionary(
                     x => x.GridNumber, x => x);
             }
         }
@@ -131,13 +132,31 @@ namespace Radicitus.SqlProviders
                     "UPDATE rad.RadGridNumber SET HasWon = 0 WHERE GridId = @GridId; SELECT RadMemberName, GridNumber FROM rad.RadGridNumber WHERE GridId = @GridId AND GridNumber = @GridNumber";
                 const string updateWinnerSql =
                     "UPDATE rad.RadGridNumber SET HasWon = 1 WHERE GridNumber = @GridNumber AND GridId = @GridId";
-                var winner = (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId, GridNumber = rand}))
-                    .FirstOrDefault();
+                var winner = (await connection.QueryAsync<RadGridNumber>(sql, new {GridId = gridId, GridNumber = rand})
+                        .ConfigureAwait(false))
+                        .FirstOrDefault();
                 if (winner != null)
                 {
-                    await connection.QueryAsync<string>(updateWinnerSql, new {GridId = gridId, GridNumber = rand});
+                    await connection.QueryAsync<string>(updateWinnerSql, 
+                            new {GridId = gridId, GridNumber = rand})
+                        .ConfigureAwait(false);
                 }
                 return winner;
+            }
+        }
+
+        public async Task<bool> AuthenticateUser(string username, byte[] password)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "SELECT Username FROM rad.Radmin WHERE Username = LOWER(@Username) AND Password = @Password";
+                var foundUser = await connection.QueryAsync<string>(sql, new
+                {
+                    Username = username,
+                    Password = password
+                }).ConfigureAwait(false);
+
+                return foundUser.Any();
             }
         }
     }
