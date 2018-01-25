@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,12 @@ namespace Radicitus.Web
         {
             services.AddSession();
             services.AddDistributedMemoryCache();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/LogIn";
+                    options.LogoutPath = "/Account/LogOut";
+                });
             services.AddMvc();
             var connectionString = Configuration.GetConnectionString("RadSql");
             services.AddSingleton<IRadSqlProvider>(new RadSqlProvider(connectionString));
@@ -38,6 +45,7 @@ namespace Radicitus.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSession();
             app.UseMvc(routes =>

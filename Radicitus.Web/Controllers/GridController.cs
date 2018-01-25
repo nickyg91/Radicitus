@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Radicitus.Entities;
@@ -21,7 +22,7 @@ namespace Radicitus.Web.Controllers
             _radSql = radSql;
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddGrid(GridModel grid)
         {
             if (!ModelState.IsValid)
@@ -38,7 +39,7 @@ namespace Radicitus.Web.Controllers
             return Json(insertedGrid);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddMembers(List<RadMemberModel> members)
         {
             if (!ModelState.IsValid)
@@ -99,21 +100,21 @@ namespace Radicitus.Web.Controllers
             return Json(new { numbers = string.Join(",", generatedNumbers) });
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public void ClearGridState(int id)
         {
             Session.Remove(id.ToString());
             Session.CommitAsync();
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> DrawWinner(int id)
         {
             var winner = await _radSql.DrawWinner(id);
             return Json(new {Message = winner == null ? "Nobody won!" : $"{winner.RadMemberName} won the board with # {winner.GridNumber}!"});
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddMember(RadMemberModel member)
         {
             var memberDictionary = Session
@@ -179,7 +180,7 @@ namespace Radicitus.Web.Controllers
                 });
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult RemoveMember(RadMemberModel member)
         {
             var memberDictionary = Session

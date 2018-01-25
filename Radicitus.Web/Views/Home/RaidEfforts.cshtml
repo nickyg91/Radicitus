@@ -1,20 +1,26 @@
 ﻿<div class="container mt-3">
     <h1>
         W.H.O.R.Es
-        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addGridModal">
-            <i class="fa fa-plus-square"></i>
-            Add
-        </button>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addGridModal">
+                <i class="fa fa-plus-square"></i>
+                Add
+            </button>
+        }
     </h1>
     <h3>We Help Out Radicitus Efforts</h3>
     <hr />
     <div id="gridsDisplay">
-        @await Component.InvokeAsync("RenderAllGrids", null)
+        @await Component.InvokeAsync("RenderAllGrids", null).ConfigureAwait(false)
     </div>
 </div>
-<div id="addGridModal" class="modal" tabindex="-1" role="dialog">
-    @{Html.RenderPartial("CreateGridModal");}
-</div>
+@if (this.User.Identity.IsAuthenticated)
+{
+    <div id="addGridModal" class="modal" tabindex="-1" role="dialog">
+        @{Html.RenderPartial("CreateGridModal");}
+    </div>
+}
 @section scripts{ 
     <script type="text/javascript" src="~/js/GridHome.js"></script>
 }
