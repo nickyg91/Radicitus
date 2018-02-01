@@ -93,7 +93,7 @@
                         var tr = "<tr><td>" + member.MemberName + "</td><td> " + member.NumberCsv + "</td><td>" + button + "</td></tr>";
                         $("#memberTable > tbody:last-child").append(tr);
                         $("#memberNameTextBox").val("");
-                        $("#totalNumbersToRandomize").val();
+                        $("#totalNumbersToRandomize").val("");
                         $("#numbersTextArea").val();
                         if ($("#submitMembersButton").is(":disabled")) {
                             $("#submitMembersButton").prop("disabled", false);
@@ -135,7 +135,7 @@
                 randomizeNumbers(totalNumbers);
             });
 
-        $("#totalNumbersToRandomize").on("change",
+        $("#totalNumbersToRandomize").on("change blur keyup",
             function () {
                 var val = $(this).val();
                 if (val !== "" && parseInt(val) && $("#totalNumbersToRandomize").valid()) {
