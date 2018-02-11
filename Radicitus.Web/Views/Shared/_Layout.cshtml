@@ -6,27 +6,38 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome.css" />
     <environment include="Development">
-       
+
     </environment>
     <environment exclude="Development">
         @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />*@
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />*@
     </environment>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">Radicitus</a>
+        <a class="navbar-brand mr-0 mr-md-2" href="@Url.Action("Index", "Home")">
+            <img class="logo-nav" src="~/images/Logo_Radicitus_White.png" />
+            Radicitus
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#radNavBar" aria-controls="radNavBar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="radNavBar">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("RaidEfforts", "Home")">Raid Efforts <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link
+                   @(ViewContext.RouteData.Values["action"].ToString() == "RaidEfforts"
+                     && ViewContext.RouteData.Values["controller"].ToString() == "Home"
+                         ? "active"
+                         : "")"
+                       href="@Url.Action("RaidEfforts", "Home")">
+                        Raid Efforts
+                        <span class="sr-only">(current)</span>
+                    </a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -43,28 +54,23 @@
                             Log In
                         </a>
                     }
-                    
                 </li>
             </ul>
         </div>
     </nav>
-
     <main role="main">
-        <div>
-            @RenderBody()
-        </div>
-    </main><!-- /.container -->
-
+        @RenderBody()
+    </main>
     @*<environment include="Development">*@
-        <script src="~/lib/jquery.js"></script>
-        <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
-        <script src="~/lib/jquery.validate.js"></script>
-        <script src="~/lib/jquery.validate.unobtrusive.js"></script>
-        <script src="~/js/_extensions.js"></script>
-        <script src="~/lib/popper.js"></script>
-        <script src="~/lib/bootstrap.js"></script>
-        <script src="~/lib/bootbox.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery.js"></script>
+    <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery.validate.js"></script>
+    <script src="~/lib/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/_extensions.js"></script>
+    <script src="~/lib/popper.js"></script>
+    <script src="~/lib/bootstrap.js"></script>
+    <script src="~/lib/bootbox.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @*</environment>*@
     @RenderSection("Scripts", required: false)
 </body>
