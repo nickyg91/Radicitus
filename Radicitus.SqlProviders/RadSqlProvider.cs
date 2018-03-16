@@ -67,7 +67,7 @@ namespace Radicitus.SqlProviders
             using (var connection = new SqlConnection(_connectionString))
             {
                 const string sql = "SELECT COUNT(*) FROM rad.RadGridNumber WHERE GridId = @GridId";
-                return await connection.ExecuteScalarAsync<int>(sql, new { GridId = gridId }) * gridSquareCost; 
+                return await connection.ExecuteScalarAsync<int>(sql, new { GridId = gridId }).ConfigureAwait(false) * gridSquareCost; 
             }
         }
 
@@ -77,7 +77,7 @@ namespace Radicitus.SqlProviders
             {
                 const string sql =
                     "SELECT RadNumberId, GridId, GridNumber, RadNemberName, HasWon FROM rad.RadGridNumber WHERE GridId = @GridId";
-                return await connection.QueryAsync<RadGridNumber>(sql, new { GridId = gridId });
+                return await connection.QueryAsync<RadGridNumber>(sql, new { GridId = gridId }).ConfigureAwait(false);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Radicitus.SqlProviders
             {
                 const string sql =
                     "SELECT GridName, GridId, DateCreated, CostPerSquare FROM rad.Grid WHERE GridId = @GridId";
-                return await connection.QuerySingleAsync<Grid>(sql, new {GridId = gridId});
+                return await connection.QuerySingleAsync<Grid>(sql, new {GridId = gridId}).ConfigureAwait(false);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Radicitus.SqlProviders
             using (var connection = new SqlConnection(_connectionString))
             {
                 const string sql = "SELECT GridNumber FROM rad.RadGridNumber WHERE GridId = @GridId";
-                return (await connection.QueryAsync<int>(sql, new {GridId = gridId})).ToHashSet();
+                return (await connection.QueryAsync<int>(sql, new {GridId = gridId}).ConfigureAwait(false)).ToHashSet();
             }
         }
 
@@ -157,6 +157,41 @@ namespace Radicitus.SqlProviders
                 }).ConfigureAwait(false);
 
                 return foundUser.Any();
+            }
+        }
+
+        public async Task<IEnumerable<Poll>> GetAllPolls(string cookie)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"SELECT 
+	                                    p.PollId
+	                                    ,p.Question
+	                                    ,p.EndDate 
+	                                    ,p.StartDate
+                                    FROM Rad.PollResponse pr
+                                    INNER JOIN Rad.PollInput [pi] ON [pi].PollInputId = pr.PollInputId
+                                    INNER JOIN Rad.Poll p ON p.PollId = [pi].PollId
+                                    WHERE
+	                                    [pr].Cookie <> @Cookie
+	                                    AND
+	                                    GETDATE() BETWEEN p.StartDate AND p.EndDate";
+                return await connection.QueryAsync<Poll>(sql, new {Cookie = cookie}).ConfigureAwait(false);
+            }
+        }
+
+        public async Task<IEnumerable<PollInput>> GetAllPollInputsForPollId(int pollId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"SELECT 
+	                                [pi].PollInputTypeId
+	                                ,[pi].PollInputId
+                                    ,[pi].Answer
+                                FROM Rad.Poll p
+                                INNER JOIN Rad.PollInput [pi] ON [pi].PollId = p.PollId
+                                WHERE p.PollId = @PollId";
+                return await connection.QueryAsync<PollInput>(sql, new {PollId = pollId}).ConfigureAwait(false);
             }
         }
     }

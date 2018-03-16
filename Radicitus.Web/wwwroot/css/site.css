@@ -8,6 +8,11 @@ body {
     height: 100%;
 }
 
+.horde-red {
+    background-color: #8C1616;
+    height: 100%;
+}
+
 .home-parallax {
     height: 100%;
 }
