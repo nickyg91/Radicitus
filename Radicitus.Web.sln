@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radicitus.Web", "Radicitus.Web\Radicitus.Web.csproj", "{B24E4CB1-664C-4C29-86E0-4266062B28F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radicitus.Entities", "Radicitus.Entities\Radicitus.Entities.csproj", "{94451BCD-0332-48FF-8CC5-41D946F7A845}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radicitus.Entities", "Radicitus.Entities\Radicitus.Entities.csproj", "{94451BCD-0332-48FF-8CC5-41D946F7A845}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radicitus.SqlProviders", "Radicitus.SqlProviders\Radicitus.SqlProviders.csproj", "{494FF89F-4F12-43F5-AD4C-4283CE8ED2E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radicitus.SqlProviders", "Radicitus.SqlProviders\Radicitus.SqlProviders.csproj", "{494FF89F-4F12-43F5-AD4C-4283CE8ED2E6}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RadSqlDb", "RadSqlDb\RadSqlDb.sqlproj", "{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,12 @@ Global
 		{494FF89F-4F12-43F5-AD4C-4283CE8ED2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{494FF89F-4F12-43F5-AD4C-4283CE8ED2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{494FF89F-4F12-43F5-AD4C-4283CE8ED2E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4333FE-C2AF-4686-BCC2-F18B66BEBA14}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
