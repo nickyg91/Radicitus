@@ -1,6 +1,6 @@
 ﻿<div class="container mt-3">
     <h1>
-        W.H.O.R.Es
+        Radicitus 50/50 Board
         @if (User.Identity.IsAuthenticated)
         {
             <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addGridModal">
@@ -18,7 +18,7 @@
 @if (this.User.Identity.IsAuthenticated)
 {
     <div id="addGridModal" class="modal" tabindex="-1" role="dialog">
-        @{Html.RenderPartial("CreateGridModal");}
+        @{ await Html.RenderPartialAsync("CreateGridModal"); }
     </div>
 }
 @section scripts{ 
