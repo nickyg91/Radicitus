@@ -9,8 +9,8 @@
             </h5>
         </div>
         <div class="modal-body">
-            @{ Html.RenderPartial("AddMemberFormPartial", new RadMemberModel()); }
-            @{ Html.RenderPartial("MembersTablePartial", new List<RadMemberModel>()); }
+            @{ await Html.RenderPartialAsync("AddMemberFormPartial", new RadMemberModel()); }
+            @{ await Html.RenderPartialAsync("MembersTablePartial", new List<RadMemberModel>()); }
             <button id="submitMembersButton" type="button" disabled="disabled" class="btn btn-success">
                 <i class="fa fa-paper-plane"></i>
                 Submit Members
