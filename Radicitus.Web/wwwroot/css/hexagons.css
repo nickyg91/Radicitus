@@ -7,7 +7,7 @@
     font-family: 'Raleway', sans-serif;
     font-size: 15px;
     list-style-type: none;
-    margin-left: 15%;
+    margin-left: 7%;
 }
 
 .hex {
@@ -15,15 +15,14 @@
     visibility: hidden;
     outline: 1px solid transparent; /* fix for jagged edges in FF on hover transition */
 
-    
 }
 
-    .hex::after {
-        content: '';
-        display: block;
-        padding-bottom: 86.602%; /* =  100 / tan(60) * 1.5 */
-        background-color: black;
-    }
+.hex::after {
+    content: '';
+    display: block;
+    padding-bottom: 86.602%; /* =  100 / tan(60) * 1.5 */
+    background-color: black;
+}
 
 .hexIn {
     position: absolute;
