@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@model List<BookModel>
+
+<div class="py-md-5 bg-light">
+    <div class="container-fluid">
+        <div class="card-deck">
+            @foreach (var bookItem in Model)
+            {
+                <text>
+                    <div class="col-md-3">
+                        <div class="card-book">
+                            <div class="card card-book-img mb-4 box-shadow">
+                                <img src="~/images/@bookItem.ImageName" class="card-book-img" />
+                            </div>
+                            <div class="card card-book-content text-center container">
+                                <h4>@bookItem.Title</h4>
+                                <p>@bookItem.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </text>
+            }
+            @foreach (var bookItem in Model)
+            {
+                <text>
+                    <div class="col-md-3">
+                        <div class="card-book">
+                            <div class="card card-book-img md-4 box-shadow">
+                                <img src="~/images/@bookItem.ImageName" class="card-book-img" />
+                            </div>
+                            <div class="card card-book-content text-center container">
+                                <h4>@bookItem.Title</h4>
+                                <p>@bookItem.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </text>
+            }
+        </div>
+    </div>
+</div>

@@ -8,6 +8,35 @@ body {
     height: 100%;
 }
 
+.card-book {
+    position: relative;
+}
+
+.card-book-img {
+    color: #fff;
+    display: block;
+    height: 400px;
+    width: 267px;
+}
+
+.card-book-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    width: 267px;
+    opacity: 0;
+    transition: .5s ease;
+    color: #fff;
+    background-color: #808080;
+}
+
+.card-book:hover .card-book-content {
+    opacity: .9;
+}
+
 .home-parallax {
     height: 100%;
 }
