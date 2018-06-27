@@ -1,0 +1,35 @@
+﻿@using Radicitus.Entities
+@model NewsFeed
+<div class="container">
+    <h1>Create a News Feed!</h1>
+    <hr/>
+    <div class="col-6">
+        <form asp-controller="Admin"
+              asp-action="CreateNewsFeed"
+              data-ajax="true"
+              data-method="POST"
+              data-ajax-success="Admin.AddNewsFeedSuccess"
+              data-failure="Admin.AddNewsFeedError">
+            <div class="form-group">
+                <label>
+                    Content
+                </label>
+                <textarea asp-for="Content" class="form-control" rows="5" cols="30"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="col-6">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="preview">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{ 
+    <script type="text/javascript" src="/js/AdminPage.js"></script>
+}
