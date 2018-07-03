@@ -8,9 +8,16 @@ namespace Radicitus.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IRadSqlProvider _radRepo;
+        public HomeController(IRadSqlProvider radRepo)
         {
-            return View();
+            _radRepo = radRepo;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var newsFeedItems = await _radRepo.GetLastTenFeeds();
+            return View(newsFeedItems);
         }
 
         public IActionResult RaidEfforts()

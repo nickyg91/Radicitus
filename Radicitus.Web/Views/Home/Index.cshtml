@@ -1,11 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Radicitus Home";
 }
-<div>
-    <div class="text-center col-4 offset-4">
+@using System.Net
+@using System.Web
+@using Microsoft.AspNetCore.Html
+@model List<Radicitus.Entities.NewsFeed>
+<div class="container">
+    <div class="text-center col-4 offset-3">
         <img src="images/Logo_Radicitus_Black.png" />
     </div>
-    <div class="container">
+    <div>
         <ul class="hex-grid">
             <li class="hex">
                 <div class="hexIn">
@@ -40,5 +44,35 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div class="col-12">
+        <h1>
+            Radicitus News Feed
+        </h1>
+        <hr />
+        @if (Model.Count < 1)
+        {
+            <h2>There are no news items yet! Check back later for more!</h2>
+        }
+        else
+        {
+            <div class="scrollable">
+                @foreach (var newsItem in Model)
+                {
+                    var htmlString = WebUtility.HtmlDecode(newsItem.Content).Replace("\r\n", "");
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Added on @newsItem.DateCreated.ToShortDateString() @@ @newsItem.DateCreated.ToShortTimeString()
+                            </div>
+                            <div class="card-body">
+                                @Html.Raw(htmlString)
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
     </div>
 </div>

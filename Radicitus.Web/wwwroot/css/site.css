@@ -59,6 +59,14 @@ body {
     top: 25%;
 }
 
+.bd-footer {
+    padding: 4rem 0;
+    margin-top: 4rem;
+    font-size: 85%;
+    text-align: center;
+    background-color: #f7f7f7;
+}
+
 .footer {
     font-size: 12px;
     padding: 1%;
@@ -66,7 +74,10 @@ body {
     width: 100%;
 }
 
-
+.scrollable {
+    max-height: 300px;
+    overflow-y: scroll
+}
 
 .form-signin {
     max-width: 330px;

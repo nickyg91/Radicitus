@@ -15,9 +15,9 @@
     </environment>
     <environment exclude="Development">
         @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />*@
+                      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />*@
     </environment>
 </head>
 <body>
@@ -42,6 +42,20 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="nav-link
+                   @(ViewContext.RouteData.Values["action"].ToString() == "NewsFeed"
+                     && ViewContext.RouteData.Values["controller"].ToString() == "HAdminome"
+                         ? "active"
+                         : "")"
+                           href="@Url.Action("NewsFeed", "Admin")">
+                            News Feed Administration
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    }
+                </li>
             </ul>
             <ul class="navbar-nav">
                 <li>
@@ -62,7 +76,14 @@
         </div>
     </nav>
     <main role="main">
-        @RenderBody()
+        <div class="container">
+            @RenderBody()
+        </div>
+        <footer class="bd-footer text-muted">
+            <div class="container">
+                <p>Site designed by Elk, developed by Biggy</p>
+            </div>
+        </footer>
     </main>
     @*<environment include="Development">*@
     <script src="~/lib/jquery.js"></script>

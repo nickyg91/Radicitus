@@ -8,18 +8,23 @@
               asp-action="CreateNewsFeed"
               data-ajax="true"
               data-method="POST"
-              data-ajax-success="Admin.AddNewsFeedSuccess"
-              data-failure="Admin.AddNewsFeedError">
+              data-ajax-success="Admin.NewsFeedAdded"
+              data-failure="Admin.NewsFeedError">
             <div class="form-group">
                 <label>
                     Content
                 </label>
                 <textarea asp-for="Content" class="form-control" rows="5" cols="30"></textarea>
             </div>
+            <div class="form-group">
+                <button class="btn btn-primary">
+                    Create
+                </button>
+            </div>
         </form>
     </div>
-    <div class="col-6">
-        <div class="col-sm-6">
+    <div class="col-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="preview">
