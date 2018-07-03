@@ -159,5 +159,23 @@ namespace Radicitus.SqlProviders
                 return foundUser.Any();
             }
         }
+
+        public async Task<int> CreateNewsFeed(NewsFeed feed)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "INSERT INTO rad.NewsFeed ( DateCreated, Content ) VALUES ( GETDATE(), @Content ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
+                return await connection.ExecuteScalarAsync<int>(sql, feed).ConfigureAwait(false);
+            }
+        }
+
+        public async Task<List<NewsFeed>> GetLastTenFeeds()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "SELECT TOP 10 Content, DateCreated, Image FROM rad.NewsFeed ORDER BY DateCreated DESC";
+                return (await connection.QueryAsync<NewsFeed>(sql).ConfigureAwait(false)).ToList();
+            }
+        }
     }
 }
