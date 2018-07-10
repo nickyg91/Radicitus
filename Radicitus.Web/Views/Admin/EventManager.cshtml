@@ -1,0 +1,14 @@
+﻿@using Radicitus.Entities
+@model Event
+<div class="container">
+    <h1>Create a Guild Event!</h1>
+    <hr/>
+    <div class="col-12">
+        <form asp-controller="Admin"
+              asp-action="CreateEvent" 
+              data-ajax="true"
+              data-method="POST"
+              data-ajax-success="Admin.CreateEventSuccess"
+              data-ajax-error="Admin.CreateEventFailure"></form>
+    </div>
+</div>

@@ -16,6 +16,7 @@
     "gulp-copy": "1.0.1",
     "gulp-uglify": "1.0.1",
     "popper.js": "1.12.3",
-    "font-awesome": "4.7.0"
+    "font-awesome": "4.7.0",
+    "fullcalendar": "3.9.0"
   }
 }

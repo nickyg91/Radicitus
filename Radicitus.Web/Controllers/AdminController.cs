@@ -19,9 +19,35 @@ namespace Radicitus.Web.Controllers
             _adminRepo = adminRepo;
         }
 
+        public IActionResult EventManager()
+        {
+            return View();
+        }
+        
         public IActionResult NewsFeed()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CreateEvent(Event radEvent)
+        {
+            var createdEvent = await _adminRepo.CreateEvent(radEvent);
+            return Json(createdEvent);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteEvent(Event radEvent)
+        {
+            var deletedEvent = await _adminRepo.DeleteEvent(radEvent);
+            return Json(deletedEvent);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditEvent(Event radEvent)
+        {
+            var editedEvent = await _adminRepo.EditEvent(radEvent);
+            return Json(editedEvent);
         }
 
         [HttpPost]
