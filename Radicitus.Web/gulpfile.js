@@ -28,7 +28,7 @@ paths.fontawesome = paths.nodeRoot + "font-awesome/css/font-awesome.css";
 gulp.task("libs:clean",
     function(cb) {
         rimraf(paths.lib, cb);
-    });
+});
 
 
 gulp.task("scripts:copy",

@@ -1,0 +1,83 @@
+﻿@{
+    Layout = null;
+}
+@using Radicitus.Entities
+@model Event
+@if (Model != null)
+{
+    <form asp-controller="Admin"
+          asp-action="EditEvent"
+          data-ajax="true"
+          data-method="POST"
+          data-ajax-success="Admin.UpdateEventSuccess"
+          data-ajax-error="Admin.CreateEventFailure">
+        <div class="form-group">
+            <label>
+                Title
+            </label>
+            <input asp-for="EventId" type="hidden" />
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>
+                Description
+            </label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label>
+                Event Date
+            </label>
+            <div class="input-group date" id="eventDate" data-target-input="nearest">
+                <input asp-for="EventDate" class="form-control" data-toggle="datetimepicker" data-target="#eventDate" />
+                <span class="input-group-append">
+                    <span class="input-group-text fa fa-calendar" data-toggle="datetimepicker" data-target="#eventDate"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">
+                Update
+            </button>
+        </div>
+    </form>
+}
+else
+{
+    <form asp-controller="Admin"
+          asp-action="CreateEvent"
+          data-ajax="true"
+          data-method="POST"
+          data-ajax-success="Admin.CreateEventSuccess"
+          data-ajax-error="Admin.CreateEventFailure">
+        <div class="form-group">
+            <label>
+                Title
+            </label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>
+                Description
+            </label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label>
+                Event Date
+            </label>
+            <div class="input-group date" id="eventDate" data-target-input="nearest">
+                <input asp-for="EventDate" class="form-control" data-toggle="datetimepicker" data-target="#eventDate" />
+                <span class="input-group-append">
+                    <span class="input-group-text fa fa-calendar" data-toggle="datetimepicker" data-target="#eventDate"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">
+                Create
+            </button>
+        </div>
+    </form>
+}
+

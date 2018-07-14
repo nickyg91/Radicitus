@@ -4,23 +4,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/lib/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/hexagons.css" />
+    <link rel="stylesheet" href="~/css/open-iconic-bootstrap.css" />
     <link rel="stylesheet" href="~/lib/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <environment include="Development">
 
     </environment>
     <environment exclude="Development">
         @*<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+                      asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                      asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
             <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />*@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <a class="navbar-brand mr-0 mr-md-2" href="@Url.Action("Index", "Home")">
-            <img class="logo-nav" src="~/images/Logo_Radicitus_White.png" />
+            <img class="logo-nav" src="~/images/Logo_Radicitus_Black.png" />
             Radicitus
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#radNavBar" aria-controls="radNavBar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,18 +44,55 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link
+                   @(ViewContext.RouteData.Values["action"].ToString() == "EventCalendar"
+                     && ViewContext.RouteData.Values["controller"].ToString() == "Home"
+                         ? "active"
+                         : "")"
+                       href="@Url.Action("EventCalendar", "Home")">
+                        Events
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link
+                       @(ViewContext.RouteData.Values["action"].ToString() == "EventManager"
+                         && ViewContext.RouteData.Values["controller"].ToString() == "Admin"
+                             ? "active"
+                             : "")"
+                           href="@Url.Action("EventManager", "Admin")">
+                            Event Management
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link
+                       @(ViewContext.RouteData.Values["action"].ToString() == "NewsFeed"
+                         && ViewContext.RouteData.Values["controller"].ToString() == "Admin"
+                             ? "active"
+                             : "")"
+                           href="@Url.Action("NewsFeed", "Admin")">
+                            News Feeds
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                }
             </ul>
             <ul class="navbar-nav">
                 <li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="nav-link" asp-action="LogOut" asp-controller="Account">
+                        <a class="btn btn-outline-dark" asp-action="LogOut" asp-controller="Account">
                             @($"Hello, {User.Identity.Name}! Click here to log out.")
                         </a>
                     }
                     else
                     {
-                        <a class="nav-link" asp-action="LogIn" asp-controller="Account">
+                        <a class="btn btn-outline-dark" asp-action="LogIn" asp-controller="Account">
                             Log In
                         </a>
                     }
@@ -59,19 +101,28 @@
         </div>
     </nav>
     <main role="main">
-        @RenderBody()
+        <div class="container">
+            @RenderBody()
+        </div>
     </main>
-    @*<environment include="Development">*@
+        <footer class="footer text-muted">
+            <div class="container">
+                <p>Site designed by Elk and  Biggy, developed by Biggy</p>
+            </div>
+        </footer>
+
     <script src="~/lib/jquery.js"></script>
     <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
     <script src="~/lib/jquery.validate.js"></script>
     <script src="~/lib/jquery.validate.unobtrusive.js"></script>
     <script src="~/js/_extensions.js"></script>
+    <script src="~/lib/moment.min.js"></script>
     <script src="~/lib/popper.js"></script>
     <script src="~/lib/bootstrap.js"></script>
     <script src="~/lib/bootbox.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*</environment>*@
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -75,7 +75,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <div id="addMemberModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1" role="dialog">
-        @{Html.RenderPartial("AddMembersModal");}
+        @{ await Html.RenderPartialAsync("AddMembersModal"); }
     </div>
 }
 @section Scripts{

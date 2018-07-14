@@ -159,5 +159,113 @@ namespace Radicitus.SqlProviders
                 return foundUser.Any();
             }
         }
+
+        public async Task<int> CreateNewsFeed(NewsFeed feed)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "INSERT INTO rad.NewsFeed ( DateCreated, Content ) VALUES ( GETDATE(), @Content ) SELECT CAST(SCOPE_IDENTITY() AS INT)";
+                return await connection.ExecuteScalarAsync<int>(sql, feed).ConfigureAwait(false);
+            }
+        }
+
+        public async Task<List<NewsFeed>> GetLastTenFeeds()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = "SELECT TOP 10 Content, DateCreated, Image FROM rad.NewsFeed ORDER BY DateCreated DESC";
+                return (await connection.QueryAsync<NewsFeed>(sql).ConfigureAwait(false)).ToList();
+            }
+        }
+
+        public async Task<List<Event>> GetAllEventsForCurrentMonthAndYear()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var date = DateTime.Now;
+                const string sql =
+                    "SELECT * FROM rad.Event WHERE DATEPART(MONTH, EventDate) = @CurrentMonth AND DATEPART(YEAR, EventDate) = @CurrentYear";
+                return (await connection.QueryAsync<Event>(sql, 
+                new
+                {
+                    CurrentMonth = date.Month,
+                    CurrentYear = date.Year
+                })).ToList();
+            }
+        }
+
+        public async Task<Event> CreateEvent(Event radEvent)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"
+                INSERT INTO rad.Event
+                (
+            
+                    Title
+                    ,Description
+                    ,EventDate
+                    )
+                VALUES
+                (
+                    @Title
+                    , @Description
+                    , @EventDate
+                )
+                DECLARE @CreatedEventId INT = (SELECT CAST(SCOPE_IDENTITY() AS INT))
+                SELECT
+                    *
+                FROM
+
+                rad.Event
+                WHERE
+                    EventId = @CreatedEventId";
+
+                return await connection.QuerySingleAsync<Event>(sql, radEvent);
+            }
+        }
+
+        public async Task<Event> EditEvent(Event radEvent)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"
+                UPDATE rad.Event
+	            SET
+		            Title = @Title
+		            ,Description = @Description
+		            ,EventDate = @EventDate
+	            WHERE
+		            EventId = @EventId
+	            SELECT * FROM rad.Event WHERE EventId = @EventId";
+
+                return await connection.QuerySingleAsync<Event>(sql, radEvent);
+            }
+        }
+
+        public async Task<bool> DeleteEvent(Event radEvent)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"
+
+                DELETE FROM rad.Event
+	            WHERE
+		            EventId = @EventId
+	            SELECT @@ROWCOUNT";
+
+                return await connection.ExecuteScalarAsync<int>(sql, new { radEvent.EventId }) > 0;
+            }
+        }
+
+        public async Task<List<Event>> GetAllEvents()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"SELECT * FROM rad.[Event] ORDER BY EventDate DESC";
+
+                return (await connection.QueryAsync<Event>(sql)).ToList();
+            }
+        }
     }
 }

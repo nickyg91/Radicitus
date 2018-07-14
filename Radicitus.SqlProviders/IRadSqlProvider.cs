@@ -1,4 +1,5 @@
-﻿using Radicitus.Entities;
+﻿using System;
+using Radicitus.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,5 +17,12 @@ namespace Radicitus.SqlProviders
         Task<Dictionary<int, RadGridNumber>> GetMemberNumbersForGridAsync(int gridId);
         Task<RadGridNumber> DrawWinner(int gridId);
         Task<bool> AuthenticateUser(string username, byte[] password);
+        Task<int> CreateNewsFeed(NewsFeed feed);
+        Task<List<NewsFeed>> GetLastTenFeeds();
+        Task<List<Event>> GetAllEventsForCurrentMonthAndYear();
+        Task<Event> CreateEvent(Event radEvent);
+        Task<Event> EditEvent(Event radEvent);
+        Task<bool> DeleteEvent(Event radEvent);
+        Task<List<Event>> GetAllEvents();
     }
 }

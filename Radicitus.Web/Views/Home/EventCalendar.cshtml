@@ -1,0 +1,16 @@
+﻿@using Newtonsoft.Json
+@using Radicitus.Entities
+@model List<Event>
+<div class="col-12">
+    <h1>Guild Event Calendar</h1>
+    <hr />
+    <div id="calendar">
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var events = @Html.Raw(JsonConvert.SerializeObject(Model));
+        console.log(events);
+    </script>
+    <script src="~/js/GuildEventCalendar.js"></script>
+}

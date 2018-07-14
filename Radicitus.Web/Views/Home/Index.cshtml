@@ -1,50 +1,88 @@
 ﻿@{
     ViewData["Title"] = "Radicitus Home";
 }
-<div class="home-parallax">
-    <div class="parallax-image-1 parallax">
-        <div class="col-6 offset-3 home-content transparent bg-dark text-white">
-            <h1>
-                The Radicitus Gaming Community
-            </h1>
-            <img class="logo-small" src="images/Logo_Radicitus_White.png"/>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla id eros dignissim, venenatis turpis a, consectetur nisl. Aliquam aliquam a lorem in pharetra. Aliquam eget lacus ac dui pretium consequat iaculis eu enim. Sed accumsan, erat a suscipit rhoncus, nisi turpis porta nisi, eget rutrum ipsum lacus a arcu. Aliquam ac consequat est. Sed congue neque vitae odio malesuada lobortis. Ut placerat pharetra porttitor. Maecenas eleifend fermentum ornare. Vivamus ullamcorper est at finibus vestibulum.
-
-                Aliquam sodales accumsan felis, non feugiat ipsum congue a. Duis tincidunt mollis pretium. Integer egestas justo arcu, consectetur fermentum risus porttitor ac. Aliquam sit amet ante dolor. Mauris in felis sit amet nunc aliquam imperdiet vel ut odio. Suspendisse eget diam quis orci fringilla semper vel vel turpis. Ut fringilla diam at ligula consectetur, eu cursus sem congue. Curabitur volutpat turpis sem, in laoreet augue finibus quis. Aenean quis libero metus. Vivamus neque urna, aliquam nec tincidunt sed, rhoncus et nibh. 
-            </p>
-            <h3>
-                Find us on Thrall!
-            </h3>
-        </div>
+@using System.Net
+@using System.Web
+@using Microsoft.AspNetCore.Html
+@model List<Radicitus.Entities.NewsFeed>
+<div class="container">
+    <div class="text-center col-4 offset-3">
+        <img src="images/Logo_Radicitus_Black.png" />
     </div>
-    <div class="parallax-image-2 parallax">
-        <div class="col-6 offset-3 home-content transparent bg-dark text-white">
-            <h1>
-                We Play Destiny 2!
-            </h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla id eros dignissim, venenatis turpis a, consectetur nisl. Aliquam aliquam a lorem in pharetra. Aliquam eget lacus ac dui pretium consequat iaculis eu enim. Sed accumsan, erat a suscipit rhoncus, nisi turpis porta nisi, eget rutrum ipsum lacus a arcu. Aliquam ac consequat est. Sed congue neque vitae odio malesuada lobortis. Ut placerat pharetra porttitor. Maecenas eleifend fermentum ornare. Vivamus ullamcorper est at finibus vestibulum.
-
-                Aliquam sodales accumsan felis, non feugiat ipsum congue a. Duis tincidunt mollis pretium. Integer egestas justo arcu, consectetur fermentum risus porttitor ac. Aliquam sit amet ante dolor. Mauris in felis sit amet nunc aliquam imperdiet vel ut odio. Suspendisse eget diam quis orci fringilla semper vel vel turpis. Ut fringilla diam at ligula consectetur, eu cursus sem congue. Curabitur volutpat turpis sem, in laoreet augue finibus quis. Aenean quis libero metus. Vivamus neque urna, aliquam nec tincidunt sed, rhoncus et nibh.
-            </p>
-        </div>
+    <div>
+        <ul class="hex-grid">
+            <li class="hex">
+                <div class="hexIn">
+                    <a class="hexLink" href="@Url.Action("EventCalendar", "Home")">
+                        <img src="images/calendar-icon.png" alt="" />
+                        <h1>Calendar</h1>
+                    </a>
+                </div>
+            </li>
+            <li class="hex">
+                <div class="hexIn">
+                    <a class="hexLink" href="@Url.Action("RaidEfforts", "Home")">
+                        <img src="images/Logo_Radicitus_White.png" alt="" />
+                        <h1>50/50</h1>
+                    </a>
+                </div>
+            </li>
+            <li class="hex bg-dark">
+                <div class="hexIn bg-dark">
+                    <a class="hexLink bg-dark" href="">
+                        <img src="images/if_WoW_36832.png" alt="" />
+                        <h1>Coming Soon</h1>
+                    </a>
+                </div>
+            </li>
+            <li class="hex bg-dark">
+                <div class="hexIn bg-dark">
+                    <a class="hexLink bg-dark" href="https://twitch.tv">
+                        @*<img src="images/GlitchIcon_Purple_256px.png" alt="" />*@
+                        <h1>Coming Soon</h1>
+                    </a>
+                </div>
+            </li>
+            <li class="hex bg-dark">
+                <div class="hexIn bg-dark">
+                    <a class="hexLink bg-dark" href="">
+                        @*<img class="bg-light" src="images/if_WoW_36832.png" alt="" />*@
+                        <h1>Coming Soon</h1>
+                    </a>
+                </div>
+            </li>
+        </ul>
     </div>
-    <div class="parallax-image-3 parallax">
-        <div class="col-6 offset-3 home-content transparent bg-dark text-white">
-            <h1>
-                Some of us play Overwatch!
-            </h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla id eros dignissim, venenatis turpis a, consectetur nisl. Aliquam aliquam a lorem in pharetra. Aliquam eget lacus ac dui pretium consequat iaculis eu enim. Sed accumsan, erat a suscipit rhoncus, nisi turpis porta nisi, eget rutrum ipsum lacus a arcu. Aliquam ac consequat est. Sed congue neque vitae odio malesuada lobortis. Ut placerat pharetra porttitor. Maecenas eleifend fermentum ornare. Vivamus ullamcorper est at finibus vestibulum.
+    <div class="col-12">
+        <h1>
+            Radicitus News Feed
+        </h1>
+        <hr />
+        @if (Model.Count < 1)
+        {
+            <h2>There are no news items yet! Check back later for more!</h2>
+        }
+        else
+        {
+            <div class="scrollable">
+                @foreach (var newsItem in Model)
+                {
+                    var htmlString = WebUtility.HtmlDecode(newsItem.Content).Replace("\r\n", "");
 
-                Aliquam sodales accumsan felis, non feugiat ipsum congue a. Duis tincidunt mollis pretium. Integer egestas justo arcu, consectetur fermentum risus porttitor ac. Aliquam sit amet ante dolor. Mauris in felis sit amet nunc aliquam imperdiet vel ut odio. Suspendisse eget diam quis orci fringilla semper vel vel turpis. Ut fringilla diam at ligula consectetur, eu cursus sem congue. Curabitur volutpat turpis sem, in laoreet augue finibus quis. Aenean quis libero metus. Vivamus neque urna, aliquam nec tincidunt sed, rhoncus et nibh.
-            </p>
-        </div>
-    </div>
-    <div class="parallax footer bg-dark text-white">
-        <p>©2004 Blizzard Entertainment, Inc. All rights reserved. World of Warcraft, Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries.</p>
-        <p>©2016 Blizzard Entertainment, Inc. All rights reserved. Overwatch is a trademark or registered trademark of Blizzard Entertainment, Inc. in the U.S. and/or other countries.</p>
-        <p>© Bungie, Inc. All rights reserved. Destiny, the Destiny Logo, Bungie and the Bungie logo are among the trademarks of Bungie, Inc</p>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Added on @newsItem.DateCreated.ToShortDateString() @@ @newsItem.DateCreated.ToShortTimeString()
+                            </div>
+                            <div class="card-body">
+                                @Html.Raw(htmlString)
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                }
+            </div>
+        }
+
     </div>
 </div>
