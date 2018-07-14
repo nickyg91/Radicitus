@@ -20,6 +20,11 @@ namespace Radicitus.Web.Controllers
             return View(newsFeedItems);
         }
 
+        public async Task<IActionResult> EventCalendar()
+        {
+            var events = await _radRepo.GetAllEventsForCurrentMonthAndYear();
+            return View(events);
+        }
         public IActionResult RaidEfforts()
         {
             return View();

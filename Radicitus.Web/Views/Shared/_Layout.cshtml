@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="~/css/hexagons.css" />
     <link rel="stylesheet" href="~/css/open-iconic-bootstrap.css" />
     <link rel="stylesheet" href="~/lib/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <environment include="Development">
 
     </environment>
@@ -21,7 +23,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light fixed-top">
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <a class="navbar-brand mr-0 mr-md-2" href="@Url.Action("Index", "Home")">
             <img class="logo-nav" src="~/images/Logo_Radicitus_Black.png" />
             Radicitus
@@ -43,19 +45,42 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a class="nav-link
-                   @(ViewContext.RouteData.Values["action"].ToString() == "NewsFeed"
-                     && ViewContext.RouteData.Values["controller"].ToString() == "HAdminome"
+                    <a class="nav-link
+                   @(ViewContext.RouteData.Values["action"].ToString() == "EventCalendar"
+                     && ViewContext.RouteData.Values["controller"].ToString() == "Home"
                          ? "active"
                          : "")"
-                           href="@Url.Action("NewsFeed", "Admin")">
-                            News Feed Administration
+                       href="@Url.Action("EventCalendar", "Home")">
+                        Events
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link
+                       @(ViewContext.RouteData.Values["action"].ToString() == "EventManager"
+                         && ViewContext.RouteData.Values["controller"].ToString() == "Admin"
+                             ? "active"
+                             : "")"
+                           href="@Url.Action("EventManager", "Admin")">
+                            Event Management
                             <span class="sr-only">(current)</span>
                         </a>
-                    }
-                </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link
+                       @(ViewContext.RouteData.Values["action"].ToString() == "NewsFeed"
+                         && ViewContext.RouteData.Values["controller"].ToString() == "Admin"
+                             ? "active"
+                             : "")"
+                           href="@Url.Action("NewsFeed", "Admin")">
+                            News Feeds
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                }
             </ul>
             <ul class="navbar-nav">
                 <li>
@@ -79,23 +104,25 @@
         <div class="container">
             @RenderBody()
         </div>
-        <footer class="bd-footer text-muted">
+    </main>
+        <footer class="footer text-muted">
             <div class="container">
-                <p>Site designed by Elk, developed by Biggy</p>
+                <p>Site designed by Elk and  Biggy, developed by Biggy</p>
             </div>
         </footer>
-    </main>
-    @*<environment include="Development">*@
+
     <script src="~/lib/jquery.js"></script>
     <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
     <script src="~/lib/jquery.validate.js"></script>
     <script src="~/lib/jquery.validate.unobtrusive.js"></script>
     <script src="~/js/_extensions.js"></script>
+    <script src="~/lib/moment.min.js"></script>
     <script src="~/lib/popper.js"></script>
     <script src="~/lib/bootstrap.js"></script>
     <script src="~/lib/bootbox.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*</environment>*@
     @RenderSection("Scripts", required: false)
 </body>
 </html>

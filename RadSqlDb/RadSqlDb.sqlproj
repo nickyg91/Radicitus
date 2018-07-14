@@ -74,5 +74,6 @@
     <Build Include="Security\RoleMemberships.sql" />
     <Build Include="Security\rad.sql" />
     <Build Include="rad\Tables\NewsFeed.sql" />
+    <Build Include="rad\Tables\Event.sql" />
   </ItemGroup>
 </Project>

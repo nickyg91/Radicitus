@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +17,53 @@ namespace Radicitus.Web.Controllers
             _adminRepo = adminRepo;
         }
 
+        public async Task<IActionResult> EventManager()
+        {
+            var events = await _adminRepo.GetAllEvents();
+            return View(events);
+        }
+        
         public IActionResult NewsFeed()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditEvent(int eventId)
+        {
+            var eventItem = (await _adminRepo.GetAllEvents()).FirstOrDefault(x => x.EventId == eventId);
+            return PartialView("CreateEvent", eventItem);
+        }
+
+        public IActionResult CreateEvent()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult EventList()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CreateEvent(Event radEvent)
+        {
+            var createdEvent = await _adminRepo.CreateEvent(radEvent);
+            return Json(createdEvent);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteEvent(Event radEvent)
+        {
+            var deletedEvent = await _adminRepo.DeleteEvent(radEvent);
+            return Json(deletedEvent);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditEvent(Event radEvent)
+        {
+            var editedEvent = await _adminRepo.EditEvent(radEvent);
+            return Json(editedEvent);
         }
 
         [HttpPost]
