@@ -16,22 +16,52 @@ var Admin = new function () {
         $("#eventDate").datetimepicker();
 
         $(".edit-event").on("click",
-            function() {
+            function () {
                 var currentButton = $(this);
                 var eventId = currentButton.attr("id");
                 $.get("/Admin/EditEvent?eventId=" + eventId,
-                    function(response) {
+                    function (response) {
                         $("#createEvent").empty().append(response);
                     });
             });
 
+        $(".delete-event").on("click",
+            function () {
+                var currentButton = $(this);
+                bootbox.confirm("Are you sure you want to delete this?",
+                    function (response) {
+                        if (response) {
+                           
+                            var eventId = currentButton.attr("id");
+                            $.post("/Admin/DeleteEvent", { eventId: eventId },
+                                function (response) {
+                                    if (response) {
+                                        location.reload();
+                                    } else {
+                                        bootbox.alert("Your item was not deleted.");
+                                    }
+                                });
+                        } else {
+                            return;
+                        }
+                    });
+            });
+
     };
-    this.NewsFeedAdded = function(response) {
+    this.NewsFeedAdded = function (response) {
         bootbox.alert(response.message);
-        //lol too lazy
-        window.reload();
-    }
-    this.NewsFeedError = function() {
+    };
+    this.NewsFeedError = function () {
         bootbox.alert("An error occurred while adding your news feed item!");
+    };
+    this.CreateEventSuccess = function () {
+        //lol too lazy
+        location.reload();
+    };
+    this.CreateEventFailure = function () {
+        bootbox.alert("An error occurred while creating this event.");
+    };
+    this.UpdateEventSuccess = function () {
+        location.reload();
     };
 };

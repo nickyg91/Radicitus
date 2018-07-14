@@ -13,7 +13,7 @@
         <ul class="hex-grid">
             <li class="hex">
                 <div class="hexIn">
-                    <a class="hexLink" href="#">
+                    <a class="hexLink" href="@Url.Action("EventCalendar", "Home")">
                         <img src="images/calendar-icon.png" alt="" />
                         <h1>Calendar</h1>
                     </a>
@@ -27,19 +27,27 @@
                     </a>
                 </div>
             </li>
-            <li class="hex">
-                <div class="hexIn">
-                    <a class="hexLink" href="#">
+            <li class="hex bg-dark">
+                <div class="hexIn bg-dark">
+                    <a class="hexLink bg-dark" href="">
                         <img src="images/if_WoW_36832.png" alt="" />
-                        <h1>Raiding</h1>
+                        <h1>Coming Soon</h1>
                     </a>
                 </div>
             </li>
-            <li class="hex">
-                <div class="hexIn">
-                    <a class="hexLink" href="#">
-                        <img src="images/GlitchIcon_Purple_256px.png" alt="" />
-                        <h1>Streaming</h1>
+            <li class="hex bg-dark">
+                <div class="hexIn bg-dark">
+                    <a class="hexLink bg-dark" href="https://twitch.tv">
+                        @*<img src="images/GlitchIcon_Purple_256px.png" alt="" />*@
+                        <h1>Coming Soon</h1>
+                    </a>
+                </div>
+            </li>
+            <li class="hex bg-dark">
+                <div class="hexIn bg-dark">
+                    <a class="hexLink bg-dark" href="">
+                        @*<img class="bg-light" src="images/if_WoW_36832.png" alt="" />*@
+                        <h1>Coming Soon</h1>
                     </a>
                 </div>
             </li>
@@ -60,6 +68,7 @@
                 @foreach (var newsItem in Model)
                 {
                     var htmlString = WebUtility.HtmlDecode(newsItem.Content).Replace("\r\n", "");
+
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
@@ -70,6 +79,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr/>
                 }
             </div>
         }

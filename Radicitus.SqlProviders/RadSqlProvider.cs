@@ -212,15 +212,14 @@ namespace Radicitus.SqlProviders
                     , @Description
                     , @EventDate
                 )
-                DECLARE @EventId INT = (SELECT CAST(SCOPE_IDENTITY() AS INT)
+                DECLARE @CreatedEventId INT = (SELECT CAST(SCOPE_IDENTITY() AS INT))
                 SELECT
                     *
-                    FROM
+                FROM
 
                 rad.Event
                 WHERE
-
-                    EventId = @EventId";
+                    EventId = @CreatedEventId";
 
                 return await connection.QuerySingleAsync<Event>(sql, radEvent);
             }
@@ -255,7 +254,7 @@ namespace Radicitus.SqlProviders
 		            EventId = @EventId
 	            SELECT @@ROWCOUNT";
 
-                return await connection.ExecuteScalarAsync<int>(sql, radEvent) > 0;
+                return await connection.ExecuteScalarAsync<int>(sql, new { radEvent.EventId }) > 0;
             }
         }
 
