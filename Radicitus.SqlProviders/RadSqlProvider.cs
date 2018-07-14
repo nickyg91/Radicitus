@@ -258,5 +258,15 @@ namespace Radicitus.SqlProviders
                 return await connection.ExecuteScalarAsync<int>(sql, radEvent) > 0;
             }
         }
+
+        public async Task<List<Event>> GetAllEvents()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                const string sql = @"SELECT * FROM rad.[Event] ORDER BY EventDate DESC";
+
+                return (await connection.QueryAsync<Event>(sql)).ToList();
+            }
+        }
     }
 }

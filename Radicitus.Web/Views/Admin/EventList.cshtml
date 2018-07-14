@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+@using Radicitus.Entities
+@model List<Event>
+
+<table class="table table-dark table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Event Name</th>
+            <th scope="col">Event Date</th>
+            <th scope="col">Event Description</th>
+            <th scope="col" class="button-col"></th>
+            <th scope="col" class="button-col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var eventItem in Model)
+        {
+            <tr>
+                <td>@eventItem.Title</td>
+                <td>@eventItem.EventDate</td>
+                <td>@eventItem.Description</td>
+                <td>
+                    <button type="button" class="edit-event btn btn-info" id="@eventItem.EventId">
+                        Edit
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="delete-event btn btn-danger" id="@eventItem.EventId">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

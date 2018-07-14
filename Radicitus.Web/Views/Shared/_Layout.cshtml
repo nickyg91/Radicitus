@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/hexagons.css" />
     <link rel="stylesheet" href="~/css/open-iconic-bootstrap.css" />
     <link rel="stylesheet" href="~/lib/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <environment include="Development">
 
     </environment>
@@ -79,21 +80,23 @@
         <div class="container">
             @RenderBody()
         </div>
-        <footer class="bd-footer text-muted">
-            <div class="container">
-                <p>Site designed by Elk, developed by Biggy</p>
-            </div>
-        </footer>
     </main>
+    <footer class="bd-footer text-muted">
+        <div class="container">
+            <p>Site designed by Elk, developed by Biggy</p>
+        </div>
+    </footer>
     @*<environment include="Development">*@
     <script src="~/lib/jquery.js"></script>
     <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
     <script src="~/lib/jquery.validate.js"></script>
     <script src="~/lib/jquery.validate.unobtrusive.js"></script>
     <script src="~/js/_extensions.js"></script>
+    <script src="~/lib/moment.min.js"></script>
     <script src="~/lib/popper.js"></script>
     <script src="~/lib/bootstrap.js"></script>
     <script src="~/lib/bootbox.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @*</environment>*@
     @RenderSection("Scripts", required: false)

@@ -1,14 +1,15 @@
 ﻿@using Radicitus.Entities
-@model Event
+@model List<Event>
 <div class="container">
     <h1>Create a Guild Event!</h1>
-    <hr/>
+    <hr />
+    <div class="col-12" id="createEvent">
+        <partial name="CreateEvent" model="null"/>
+    </div>
     <div class="col-12">
-        <form asp-controller="Admin"
-              asp-action="CreateEvent" 
-              data-ajax="true"
-              data-method="POST"
-              data-ajax-success="Admin.CreateEventSuccess"
-              data-ajax-error="Admin.CreateEventFailure"></form>
+        <partial name="EventList" />
     </div>
 </div>
+@section scripts{
+    <script type="text/javascript" src="/js/AdminPage.js"></script>
+}

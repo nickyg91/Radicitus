@@ -17,6 +17,7 @@
     "gulp-uglify": "1.0.1",
     "popper.js": "1.12.3",
     "font-awesome": "4.7.0",
-    "fullcalendar": "3.9.0"
+    "fullcalendar": "3.9.0",
+    "moment": "2.22.2"
   }
 }

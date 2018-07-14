@@ -23,5 +23,6 @@ namespace Radicitus.SqlProviders
         Task<Event> CreateEvent(Event radEvent);
         Task<Event> EditEvent(Event radEvent);
         Task<bool> DeleteEvent(Event radEvent);
+        Task<List<Event>> GetAllEvents();
     }
 }

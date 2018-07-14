@@ -9,7 +9,7 @@ using Radicitus.SqlProviders;
 
 namespace Radicitus.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AdminController : Controller
     {
         private readonly IRadSqlProvider _adminRepo;
@@ -19,14 +19,32 @@ namespace Radicitus.Web.Controllers
             _adminRepo = adminRepo;
         }
 
-        public IActionResult EventManager()
+        public async Task<IActionResult> EventManager()
         {
-            return View();
+            var events = await _adminRepo.GetAllEvents();
+            return View(events);
         }
         
         public IActionResult NewsFeed()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditEvent(int eventId)
+        {
+            var eventItem = (await _adminRepo.GetAllEvents()).FirstOrDefault(x => x.EventId == eventId);
+            return PartialView("CreateEvent", eventItem);
+        }
+
+        public IActionResult CreateEvent()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult EventList()
+        {
+            return PartialView();
         }
 
         [HttpPost]
